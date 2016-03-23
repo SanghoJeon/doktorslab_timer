@@ -10,13 +10,13 @@ boolean isPressed = false;
 
 void setup() {
   Serial.begin(9600);
-  btSerial.begin(192000);
+  btSerial.begin(9600);
   pinMode(BUTTON, INPUT);
 }
 
 void loop() {
   while (Serial.available() > 0) {
-    char buf = Serial.read();
+    byte buf = Serial.read();
     Serial.write(buf);
     btSerial.write(buf);
   }
