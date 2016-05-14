@@ -1,31 +1,24 @@
-#include <SoftwareSerial.h>
+#include  <SPI.h>
+#include "RF24.h"
 
-#define RX 2
-#define TX 3
-#define BUTTON 4
+int msg[1];
+RF24 radio(7,8);
+const uint64_t pipe = 0xE8E8F0F0E1LL;
+int SW1 = 7;
 
-SoftwareSerial btSerial(RX, TX);
-
-boolean isPressed = false;
-
-void setup() {
-  Serial.begin(9600);
-  btSerial.begin(9600);
-  pinMode(BUTTON, INPUT);
+void setup(void) {
+  //Serial.begin(9600);
+  radio.begin();
+  radio.powerUp();
+  //Serial.println(radio.getDataRate(), DEC);
+  radio.openWritingPipe(pipe);
 }
 
-void loop() {
-  while (Serial.available() > 0) {
-    byte buf = Serial.read();
-    Serial.write(buf);
-    btSerial.write(buf);
-  }
-
-  if (digitalRead(BUTTON) > 0 && isPressed) {
-    btSerial.println("Off");
-    isPressed = false;
-  } else if (digitalRead(BUTTON) == 0 && !isPressed) {
-    btSerial.println("On");
-    isPressed = true;
-  }
+void loop(void) {
+  //if (digitalRead(SW1) == HIGH){
+  msg[0] = 111;
+  radio.write(msg, sizeof(int));
+  
+  delay(1000);
+  //}
 }
