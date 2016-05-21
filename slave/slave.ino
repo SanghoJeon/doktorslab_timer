@@ -3,7 +3,8 @@
 
 int msg[1];
 RF24 radio(7,8);
-#define CHANNEL 1
+#define CHANNEL 2
+#define PIPE 1
 const uint8_t pipe[][6] = {"1Node", "2Node"};
 int SW1 = 7;
 
@@ -12,7 +13,8 @@ void setup(void) {
   radio.begin();
   radio.powerUp();
   //Serial.println(radio.getDataRate(), DEC);
-  radio.openWritingPipe(pipe[CHANNEL]);
+  radio.setChannel(CHANNEL);
+  radio.openWritingPipe(pipe[PIPE]);
 }
 
 void loop(void) {
